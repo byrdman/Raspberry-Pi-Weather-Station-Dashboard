@@ -2,6 +2,8 @@
 include 'variables.php';
 header("access-control-allow-origin: *");
 
+$debug = $_GET['debug'];
+
 $con = new mysqli($databaseAddress,$databaseUsername,$databasePassword,$databaseSchema);
 
 // Check connection
@@ -34,7 +36,10 @@ $con->close();
 
 $url = str_replace(" ", "%20", $url);
 
-echo file_get_contents($url);
+if ($debug == "1")
+    echo $url;
+else
+    echo file_get_contents($url);
 
 // ===============================================================
 function convertKilometersToMiles($kilometers) {
