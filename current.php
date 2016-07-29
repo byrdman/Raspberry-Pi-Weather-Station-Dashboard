@@ -129,8 +129,8 @@ echo "\r\n\t}"; // Close daily stats object
 
 echo ",\r\n\t\"Settings\" : {"; // Open settings object
 echo "\r\n\t\t\"showMetricAndCelsiusMeasurements\" : " . "\"" . Settings::$showMetricAndCelsiusMeasurements . "\",";
-echo "\r\n\t\t\"showPressureInMillibars\" : " . "\"" . Settings::$showPressureInMillibars . "\"";
-
+echo "\r\n\t\t\"showPressureInMillibars\" : " . "\"" . Settings::$showPressureInMillibars . "\",";
+echo "\r\n\t\t\"soilTemperatureProbePresent\" : " . "\"" . Settings::$soilTemperatureProbePresent . "\"";
 echo "\r\n\t}"; // Close settings object
 
 echo "\r\n}"; // Close document object

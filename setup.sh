@@ -218,7 +218,36 @@ echo
 echo "  Press <ENTER> to continue..."
 read enter
 
-
+clear
+echo 
+echo 
+echo 
+getBreadcrumbs "PREFERENCES"
+echo $getBreadcrumbs_
+echo
+echo
+echo
+echo "  Do you have a soil temperature probe installed?"
+echo "    (0) No"
+echo "    (1) Yes"
+echo 
+echo -n "  !> "
+read soilTemperatureProbePresent
+if [ $soilTemperatureProbePresent = "0" ] || [ $soilTemperatureProbePresent = "1" ]
+then
+    echo 
+    echo 
+    echo "    Storing setting soilTemperatureProbePresent = $soilTemperatureProbePresent."
+    echo "---------------------------------------------------------------------------------------------"
+    mysql -vv -u root -p"$databasePassword" weather -e "Update RPiWx_SETTINGS set value='$soilTemperatureProbePresent' where name='soilTemperatureProbePresent'"
+    echo "---------------------------------------------------------------------------------------------"
+else
+    echo "    Invalid selection.  Moving on..."
+fi
+echo
+echo
+echo "  Press <ENTER> to continue..."
+read enter
 
 ####################################################################
 #

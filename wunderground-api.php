@@ -19,14 +19,11 @@ function main() {
     if (mysqli_connect_errno()) {
         echo "Failed to connect to MySQL: " . mysqli_connect_error();
     }
-
     $url = "http://weatherstation.wunderground.com/weatherstation/updateweatherstation.php?softwaretype=Raspberry Pi Weather Station Dashboard&";
     $stationPassword = "";
-
     $result = $con->query('call GETWUNDERGROUNDDATA');
     if ($result->num_rows > 0) {
         $row = mysqli_fetch_array($result);
-
         $url .= "dateutc=" . $row["CREATEDUTC"] . "&";
         $url .= "winddir=" . $row["WIND_DIRECTION"] . "&";
         $url .= "windspeedmph=" . convertKilometersToMiles($row["WIND_SPEED"]) . "&";
@@ -35,17 +32,17 @@ function main() {
         $url .= "tempf=" . convertCelsiusToFahrenheit($row["AMBIENT_TEMPERATURE"]) . "&";
         $url .= "dewptf=" . calculateDewPointF($row["AMBIENT_TEMPERATURE"], $row["HUMIDITY"]) . "&";
         $url .= "baromin=" . convertMillibarsToInches(calculateMeanSeaLevelPressure($row["AIR_PRESSURE"], Settings::$stationElevationInMeters)) . "&";
-        $url .= "soiltempf=" . convertCelsiusToFahrenheit($row["GROUND_TEMPERATURE"]) . "&";
+        if (Settings::$soilTemperatureProbePresent == 1) {
+            $url .= "soiltempf=" . convertCelsiusToFahrenheit($row["GROUND_TEMPERATURE"]) . "&";
+        }
         $url .= "rainin=" . convertMillimetersToInches($row["@rainPastHour"]) . "&";
         $url .= "dailyrainin=" . convertMillimetersToInches($row["@rainSinceMidnight"]) . "&";
         $url .= "ID=" . $row["@WUNDERGROUND_ID"] . "&";
         $url .= "PASSWORD=";
         $stationPassword = $row["@WUNDERGROUND_PASSWORD"];
     }
-
     $result->close();
     $con->close();
-
     $url = str_replace(" ", "%20", $url);
 
     if (isset($_GET['debug'])) {
@@ -57,7 +54,5 @@ function main() {
         echo file_get_contents($url);
     }
 }
-
 main();
-
 ?>
